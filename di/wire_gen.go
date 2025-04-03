@@ -10,11 +10,11 @@ import (
 	"gamestone/app"
 	"gamestone/config"
 	"gamestone/container"
-	"gamestone/database"
 	"gamestone/handlers"
+	"gamestone/providers"
 	"gamestone/repositories"
 	"gamestone/services"
-	"gamestone/validator"
+	"gamestone/tasks"
 )
 
 // Injectors from wire.go:
@@ -23,17 +23,36 @@ import (
 func InitializeApp() (*container.AppContainer, error) {
 	appConfig := config.LoadAppConfig()
 	databaseConfig := config.LoadDatabaseConfig()
-	db, err := database.ConnectDB(databaseConfig)
+	db, err := providers.NewDBConnection(databaseConfig)
 	if err != nil {
 		return nil, err
 	}
 	gameRepository := repositories.NewGameRepository(db)
 	gameService := services.NewGameService(gameRepository)
-	validate := validator.ProvideValidator()
+	validate := providers.NewValidator()
 	gameHandler := handlers.NewGameHandler(gameService, validate)
 	appContainer, err := app.NewFiberApp(appConfig, gameHandler)
 	if err != nil {
 		return nil, err
 	}
 	return appContainer, nil
+}
+
+// Initialize Worker
+func InitializeWorker() (*container.WorkerContainer, error) {
+	appConfig := config.LoadAppConfig()
+	redisConfig := config.LoadRedisConfig()
+	databaseConfig := config.LoadDatabaseConfig()
+	db, err := providers.NewDBConnection(databaseConfig)
+	if err != nil {
+		return nil, err
+	}
+	gameRepository := repositories.NewGameRepository(db)
+	gameService := services.NewGameService(gameRepository)
+	gameTask := tasks.NewGameTask(gameService)
+	workerContainer, err := app.NewAsynqWorker(appConfig, redisConfig, gameTask)
+	if err != nil {
+		return nil, err
+	}
+	return workerContainer, nil
 }

@@ -1,6 +1,7 @@
 package services
 
 import (
+	"context"
 	"gamestone/dto"
 	"gamestone/models"
 	"gamestone/repositories"
@@ -9,6 +10,16 @@ import (
 
 type GameServiceImpl struct {
 	repository repositories.GameRepository
+}
+
+// SyncGame implements GameService.
+func (g *GameServiceImpl) SyncGame(ctx context.Context, slug string) error {
+	panic("unimplemented")
+}
+
+// SyncGames implements GameService.
+func (g *GameServiceImpl) SyncGames(ctx context.Context) error {
+	panic("unimplemented")
 }
 
 // CreateGame implements GameService.

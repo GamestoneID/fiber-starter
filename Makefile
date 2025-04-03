@@ -6,5 +6,8 @@ wire:
 run:
 	go run cmd/app/main.go
 
+run-worker:
+	go run cmd/worker/main.go
+
 build:
 	go build -o myapp cmd/app/main.go

@@ -13,5 +13,6 @@ import (
 var AppSet = wire.NewSet(
 	app.NewFiberApp,
 	ConfigSet,
+	ProviderSet,
 	HandlerSet,
 )

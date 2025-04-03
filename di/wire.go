@@ -14,3 +14,9 @@ func InitializeApp() (*container.AppContainer, error) {
 	wire.Build(AppSet)
 	return &container.AppContainer{}, nil
 }
+
+// Initialize Worker
+func InitializeWorker() (*container.WorkerContainer, error) {
+	wire.Build(WorkerSet)
+	return &container.WorkerContainer{}, nil
+}

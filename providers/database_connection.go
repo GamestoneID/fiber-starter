@@ -1,18 +1,19 @@
-package database
+package providers
 
 import (
 	"fmt"
-	"log"
-
 	"gamestone/config"
 	"gamestone/models"
+	"log"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
-func ConnectDB(cfg config.DatabaseConfig) (*gorm.DB, error) {
+// NewDBConnection establishes a connection to the database based on provided config and returns the DB instance
+func NewDBConnection(cfg config.DatabaseConfig) (*gorm.DB, error) {
+	// Initialize the DSN (Data Source Name) and Dialector based on the DB driver
 	var dsn string
 	var dialector gorm.Dialector
 
@@ -31,20 +32,21 @@ func ConnectDB(cfg config.DatabaseConfig) (*gorm.DB, error) {
 		return nil, fmt.Errorf("unsupported database driver: %s", cfg.DBDriver)
 	}
 
+	// Open the DB connection
 	db, err := gorm.Open(dialector, &gorm.Config{})
 	if err != nil {
-		log.Fatalf("Failed to connect to database: %v", err)
+		log.Fatalf("Failed to connect to the database: %v", err)
 		return nil, err
 	}
 
+	// Run database migrations
 	if err := db.AutoMigrate(
 		&models.Game{},
 	); err != nil {
-		log.Fatalf("Failed to migrate database: %v", err)
+		log.Fatalf("Failed to apply database migrations: %v", err)
 		return nil, err
 	}
 
-	log.Println("Database connected and migrated successfully!")
+	log.Println("Database connected and migrations applied successfully")
 	return db, nil
-
 }
