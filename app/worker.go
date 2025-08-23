@@ -3,16 +3,16 @@ package app
 import (
 	"gamestone/config"
 	"gamestone/container"
-	"gamestone/tasks"
+	"gamestone/internal/tasks"
 
 	"github.com/hibiken/asynq"
 )
 
 // NewAsynqWorker initializes the Asynq worker with all necessary routes
 func NewAsynqWorker(
-	appConfig config.AppConfig,
-	redisConfig config.RedisConfig,
-	gameTask tasks.GameTask,
+	appConfig *config.AppConfig,
+	redisConfig *config.RedisConfig,
+	gameTask *tasks.GameTask,
 ) (*container.WorkerContainer, error) {
 	redisClientOpt := asynq.RedisClientOpt{
 		Addr: redisConfig.RedisHost + ":" + redisConfig.RedisPort,

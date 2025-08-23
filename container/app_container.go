@@ -8,5 +8,5 @@ import (
 
 type AppContainer struct {
 	App    *fiber.App
-	Config config.AppConfig
+	Config *config.AppConfig
 }

@@ -8,7 +8,7 @@ import (
 )
 
 // NewAsyncClient creates and returns a new Asynq client
-func NewAsyncClient(redisConfig config.RedisConfig) (*asynq.Client, error) {
+func NewAsyncClient(redisConfig *config.RedisConfig) (*asynq.Client, error) {
 	// Construct the Redis connection string
 	redisClientOpt := asynq.RedisClientOpt{
 		Addr: redisConfig.RedisHost + ":" + redisConfig.RedisPort,

@@ -14,4 +14,5 @@ var ConfigSet = wire.NewSet(
 	config.LoadAppConfig,
 	config.LoadDatabaseConfig,
 	config.LoadRedisConfig,
+	config.LoadSchedulerConfig,
 )

@@ -4,12 +4,10 @@ import (
 	"fmt"
 
 	"log"
-
-	"gamestone/di"
 )
 
 func main() {
-	app, err := di.InitializeApp()
+	app, err := InitializeApp()
 	if err != nil {
 		log.Fatalf("Failed to initialize app: %v", err)
 	}

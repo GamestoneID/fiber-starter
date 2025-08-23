@@ -4,12 +4,10 @@ import (
 	"fmt"
 
 	"log"
-
-	"gamestone/di"
 )
 
 func main() {
-	worker, err := di.InitializeWorker()
+	worker, err := InitializeWorker()
 	if err != nil {
 		log.Fatalf("failed to initialize worker: %v", err)
 	}

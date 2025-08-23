@@ -3,7 +3,7 @@ package providers
 import (
 	"fmt"
 	"gamestone/config"
-	"gamestone/models"
+	"gamestone/internal/models"
 	"log"
 
 	"gorm.io/driver/mysql"
@@ -12,7 +12,7 @@ import (
 )
 
 // NewDBConnection establishes a connection to the database based on provided config and returns the DB instance
-func NewDBConnection(cfg config.DatabaseConfig) (*gorm.DB, error) {
+func NewDBConnection(cfg *config.DatabaseConfig) (*gorm.DB, error) {
 	// Initialize the DSN (Data Source Name) and Dialector based on the DB driver
 	var dsn string
 	var dialector gorm.Dialector

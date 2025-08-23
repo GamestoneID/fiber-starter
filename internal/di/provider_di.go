@@ -4,7 +4,7 @@
 package di
 
 import (
-	"gamestone/providers"
+	"gamestone/internal/providers"
 
 	"github.com/google/wire"
 )

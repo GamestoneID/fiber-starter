@@ -4,13 +4,13 @@
 package di
 
 import (
-	"gamestone/services"
+	"gamestone/internal/tasks"
 
 	"github.com/google/wire"
 )
 
 // Wire Set
-var ServiceSet = wire.NewSet(
-	services.NewGameService,
-	RepositorySet,
+var TaskSet = wire.NewSet(
+	tasks.NewGameTask,
+	ServiceSet,
 )

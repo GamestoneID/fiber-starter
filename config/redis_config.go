@@ -4,15 +4,16 @@ import (
 	"os"
 )
 
-// Cloudflare menyimpan konfigurasi Cloudflare R2
+// RedisConfig menyimpan konfigurasi Redis
 type RedisConfig struct {
 	RedisHost string
 	RedisPort string
 }
 
-func LoadRedisConfig() RedisConfig {
-	return RedisConfig{
+// LoadRedisConfig membaca konfigurasi dari environment variable
+func LoadRedisConfig() (*RedisConfig, error) {
+	return &RedisConfig{
 		RedisHost: os.Getenv("REDIS_HOST"),
 		RedisPort: os.Getenv("REDIS_PORT"),
-	}
+	}, nil
 }

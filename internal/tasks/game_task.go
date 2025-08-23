@@ -4,17 +4,21 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"gamestone/services"
+	"gamestone/internal/services"
 
 	"github.com/hibiken/asynq"
 )
 
-type GameTaskImpl struct {
-	service services.GameService
+type GameTask struct {
+	service *services.GameService
+}
+
+func NewGameTask(service *services.GameService) *GameTask {
+	return &GameTask{service}
 }
 
 // SyncGame implements GameTask.
-func (g *GameTaskImpl) SyncGames(ctx context.Context, t *asynq.Task) error {
+func (g *GameTask) SyncGames(ctx context.Context, t *asynq.Task) error {
 	fmt.Println("Syncing game...")
 
 	if err := g.service.SyncGames(ctx); err != nil {
@@ -28,7 +32,7 @@ func (g *GameTaskImpl) SyncGames(ctx context.Context, t *asynq.Task) error {
 }
 
 // SyncGames implements GameTask.
-func (g *GameTaskImpl) SyncGame(ctx context.Context, t *asynq.Task) error {
+func (g *GameTask) SyncGame(ctx context.Context, t *asynq.Task) error {
 	var payload struct {
 		Slug string `json:"slug"`
 	}
@@ -45,8 +49,4 @@ func (g *GameTaskImpl) SyncGame(ctx context.Context, t *asynq.Task) error {
 
 	return nil
 
-}
-
-func NewGameTask(service services.GameService) GameTask {
-	return &GameTaskImpl{service}
 }

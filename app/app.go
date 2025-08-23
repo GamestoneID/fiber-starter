@@ -3,16 +3,16 @@ package app
 import (
 	"gamestone/config"
 	"gamestone/container"
-	"gamestone/handlers"
-	"gamestone/routes"
+	"gamestone/internal/handlers"
+	"gamestone/internal/routes"
 
 	"github.com/gofiber/fiber/v2"
 )
 
 // NewFiberApp initializes the Fiber application with all necessary routes
 func NewFiberApp(
-	appConfig config.AppConfig,
-	gameHandler handlers.GameHandler,
+	appConfig *config.AppConfig,
+	gameHandler *handlers.GameHandler,
 ) (*container.AppContainer, error) {
 	app := fiber.New(
 		fiber.Config{

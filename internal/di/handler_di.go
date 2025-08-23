@@ -4,7 +4,7 @@
 package di
 
 import (
-	"gamestone/handlers"
+	"gamestone/internal/handlers"
 
 	"github.com/google/wire"
 )

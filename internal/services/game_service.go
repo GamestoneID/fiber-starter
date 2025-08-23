@@ -2,28 +2,32 @@ package services
 
 import (
 	"context"
-	"gamestone/dto"
-	"gamestone/models"
-	"gamestone/repositories"
+	"gamestone/internal/dto"
+	"gamestone/internal/models"
+	"gamestone/internal/repositories"
 	"gamestone/utils"
 )
 
-type GameServiceImpl struct {
+type GameService struct {
 	repository repositories.GameRepository
 }
 
+func NewGameService(repository repositories.GameRepository) *GameService {
+	return &GameService{repository}
+}
+
 // SyncGame implements GameService.
-func (g *GameServiceImpl) SyncGame(ctx context.Context, slug string) error {
+func (g *GameService) SyncGame(ctx context.Context, slug string) error {
 	panic("unimplemented")
 }
 
 // SyncGames implements GameService.
-func (g *GameServiceImpl) SyncGames(ctx context.Context) error {
+func (g *GameService) SyncGames(ctx context.Context) error {
 	panic("unimplemented")
 }
 
 // CreateGame implements GameService.
-func (g *GameServiceImpl) CreateGame(game *dto.CreateGameRequest) (*dto.DetailGameResponse, error) {
+func (g *GameService) CreateGame(game *dto.CreateGameRequest) (*dto.DetailGameResponse, error) {
 	gameToCreate := &models.Game{
 		Slug:        utils.GenerateSlug(game.Name),
 		Name:        game.Name,
@@ -42,12 +46,12 @@ func (g *GameServiceImpl) CreateGame(game *dto.CreateGameRequest) (*dto.DetailGa
 }
 
 // DeleteGame implements GameService.
-func (g *GameServiceImpl) DeleteGame(slug string) error {
+func (g *GameService) DeleteGame(slug string) error {
 	return g.repository.Delete(slug)
 }
 
 // GetAllGames implements GameService.
-func (g *GameServiceImpl) GetAllGames(filter *dto.FilterGame) (*utils.Pagination[dto.GameResponse], error) {
+func (g *GameService) GetAllGames(filter *dto.FilterGame) (*utils.Pagination[dto.GameResponse], error) {
 	games, metadata, err := g.repository.FindAll(filter)
 	if err != nil {
 		return nil, err
@@ -64,7 +68,7 @@ func (g *GameServiceImpl) GetAllGames(filter *dto.FilterGame) (*utils.Pagination
 }
 
 // GetGameBySlug implements GameService.
-func (g *GameServiceImpl) GetGameBySlug(slug string) (*dto.DetailGameResponse, error) {
+func (g *GameService) GetGameBySlug(slug string) (*dto.DetailGameResponse, error) {
 	game, err := g.repository.FindBySlugWithVariantsAndProducts(slug)
 	if err != nil {
 		return nil, err
@@ -75,7 +79,7 @@ func (g *GameServiceImpl) GetGameBySlug(slug string) (*dto.DetailGameResponse, e
 }
 
 // UpdateGame implements GameService.
-func (g *GameServiceImpl) UpdateGame(slug string, game *dto.UpdateGameRequest) (*dto.DetailGameResponse, error) {
+func (g *GameService) UpdateGame(slug string, game *dto.UpdateGameRequest) (*dto.DetailGameResponse, error) {
 	gameToUpdate, err := g.repository.FindBySlug(slug)
 
 	if err != nil {
@@ -105,8 +109,4 @@ func (g *GameServiceImpl) UpdateGame(slug string, game *dto.UpdateGameRequest) (
 
 	response := utils.ToDetailGameResponse(gameUpdated)
 	return &response, nil
-}
-
-func NewGameService(repository repositories.GameRepository) GameService {
-	return &GameServiceImpl{repository}
 }

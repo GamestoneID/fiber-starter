@@ -15,7 +15,7 @@ type AppConfig struct {
 }
 
 // LoadAppConfig membaca variabel lingkungan dan mengembalikan instance AppConfig
-func LoadAppConfig() AppConfig {
+func LoadAppConfig() (*AppConfig, error) {
 	appEnv := os.Getenv("APP_ENV")
 	if appEnv == "" {
 		appEnv = "development" // Default environment
@@ -24,6 +24,7 @@ func LoadAppConfig() AppConfig {
 	if appEnv != "production" {
 		if err := godotenv.Load(); err != nil {
 			log.Fatalf("Error loading .env file: %v", err)
+			return nil, err
 		}
 	}
 
@@ -34,9 +35,9 @@ func LoadAppConfig() AppConfig {
 		appPort = "3000" // Default port
 	}
 
-	return AppConfig{
+	return &AppConfig{
 		AppName: appName,
 		AppEnv:  appEnv,
 		AppPort: appPort,
-	}
+	}, nil
 }

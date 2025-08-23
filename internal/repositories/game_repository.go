@@ -1,8 +1,8 @@
 package repositories
 
 import (
-	"gamestone/dto"
-	"gamestone/models"
+	"gamestone/internal/dto"
+	"gamestone/internal/models"
 	"gamestone/utils"
 )
 

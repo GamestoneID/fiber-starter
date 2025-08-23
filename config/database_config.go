@@ -4,7 +4,7 @@ import (
 	"os"
 )
 
-// Cloudflare menyimpan konfigurasi Cloudflare R2
+// DatabaseConfig menyimpan konfigurasi database
 type DatabaseConfig struct {
 	DBHost     string
 	DBPort     string
@@ -14,13 +14,14 @@ type DatabaseConfig struct {
 	DBDriver   string
 }
 
-func LoadDatabaseConfig() DatabaseConfig {
-	return DatabaseConfig{
+// LoadDatabaseConfig membaca konfigurasi dari environment variable
+func LoadDatabaseConfig() (*DatabaseConfig, error) {
+	return &DatabaseConfig{
 		DBHost:     os.Getenv("DB_HOST"),
 		DBPort:     os.Getenv("DB_PORT"),
 		DBUser:     os.Getenv("DB_USER"),
 		DBPassword: os.Getenv("DB_PASSWORD"),
 		DBName:     os.Getenv("DB_NAME"),
 		DBDriver:   os.Getenv("DB_DRIVER"),
-	}
+	}, nil
 }

@@ -1,8 +1,8 @@
 package utils
 
 import (
-	"gamestone/dto"
-	"gamestone/models"
+	"gamestone/internal/dto"
+	"gamestone/internal/models"
 )
 
 func ToResponses[T any, R any](items []T, convertFunc func(*T) R) []R {

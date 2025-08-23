@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"gamestone/errors"
+	"gamestone/internal/errors"
 
 	"github.com/go-playground/validator/v10"
 )

@@ -1,22 +1,29 @@
 package handlers
 
 import (
-	"gamestone/dto"
-	"gamestone/errors"
-	"gamestone/services"
+	"gamestone/internal/dto"
+	"gamestone/internal/errors"
+	"gamestone/internal/services"
 	"gamestone/utils"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 )
 
-type GameHandlerImpl struct {
-	service  services.GameService
+type GameHandler struct {
+	service  *services.GameService
 	validate *validator.Validate
 }
 
+func NewGameHandler(service *services.GameService, validate *validator.Validate) *GameHandler {
+	return &GameHandler{
+		service:  service,
+		validate: validate,
+	}
+}
+
 // CreateGame implements GameHandler.
-func (v *GameHandlerImpl) CreateGame(c *fiber.Ctx) error {
+func (v *GameHandler) CreateGame(c *fiber.Ctx) error {
 	var game dto.CreateGameRequest
 
 	if err := c.BodyParser(&game); err != nil {
@@ -42,7 +49,7 @@ func (v *GameHandlerImpl) CreateGame(c *fiber.Ctx) error {
 }
 
 // DeleteGame implements GameHandler.
-func (v *GameHandlerImpl) DeleteGame(c *fiber.Ctx) error {
+func (v *GameHandler) DeleteGame(c *fiber.Ctx) error {
 	slug := c.Params("slug")
 
 	if err := v.service.DeleteGame(slug); err != nil {
@@ -54,7 +61,7 @@ func (v *GameHandlerImpl) DeleteGame(c *fiber.Ctx) error {
 }
 
 // GetGame implements GameHandler.
-func (v *GameHandlerImpl) GetGame(c *fiber.Ctx) error {
+func (v *GameHandler) GetGame(c *fiber.Ctx) error {
 	slug := c.Params("slug")
 
 	game, err := v.service.GetGameBySlug(slug)
@@ -71,7 +78,7 @@ func (v *GameHandlerImpl) GetGame(c *fiber.Ctx) error {
 }
 
 // GetGames implements GameHandler.
-func (v *GameHandlerImpl) GetGames(c *fiber.Ctx) error {
+func (v *GameHandler) GetGames(c *fiber.Ctx) error {
 	isActiveFilter := utils.GetOptionalBoolQuery(c, "is_active")
 	limitFilter := utils.GetOptionalIntQuery(c, "limit")
 	pageFilter := utils.GetOptionalIntQuery(c, "page")
@@ -95,7 +102,7 @@ func (v *GameHandlerImpl) GetGames(c *fiber.Ctx) error {
 }
 
 // UpdateGame implements GameHandler.
-func (v *GameHandlerImpl) UpdateGame(c *fiber.Ctx) error {
+func (v *GameHandler) UpdateGame(c *fiber.Ctx) error {
 	slug := c.Params("slug")
 
 	var game dto.UpdateGameRequest
@@ -120,11 +127,4 @@ func (v *GameHandlerImpl) UpdateGame(c *fiber.Ctx) error {
 		"data":    gameUpdated,
 		"message": "Game updated successfully",
 	})
-}
-
-func NewGameHandler(service services.GameService, validate *validator.Validate) GameHandler {
-	return &GameHandlerImpl{
-		service:  service,
-		validate: validate,
-	}
 }
